@@ -1,9 +1,0 @@
-Como os arquivos de leis e PLs não estão sempre em html, é necesśário que se faça a conversão.
-
-Sugestão do que usar pra converter os vários formatos de entrada (a saída final deve ser sempre html, mantendo a formatação original)
-
-- *.doc -> Abiword via command line:  abiword -t output.html input.doc
-- *.docx -> https://github.com/mwilliamson/python-mammoth via API ou command line
-- *.pdf -> https://github.com/coolwanglu/pdf2htmlEX
-
-A ideia é ter uma cópia do arquivo localmente e no banco a versão em html e em texto puro. 
