@@ -1,0 +1,34 @@
+// see ../bower_components/foundation/scss/foundation/components/_settings.scss
+
+@import "../bower_components/foundation/scss/normalize";
+@import "../bower_components/foundation/scss/foundation";
+@import "../bower_components/sweetalert/lib/sweet-alert";
+
+// Foundation icon fonts
+$fi-path: "../bower_components/foundation-icon-fonts" !default;
+@import "../bower_components/foundation-icon-fonts/_foundation-icons";
+
+$new-story-font-size: 1.3rem;
+
+.story-user {
+    border-left: 1rem solid $primary-color;
+}
+
+.story-new-textarea {
+    height: $new-story-font-size * 5;
+    font-size: $new-story-font-size;
+}
+
+.sign-out-button {
+    margin-left: 1.5rem;
+    margin-bottom: 0;
+}
+
+.project:first-child {
+    margin-top: 1em;
+}
+
+.project {
+    margin-top: 2em;
+}
+
