@@ -23,7 +23,8 @@ node_modules
 npm-debug.log
 web/bower_components
 coverage
-docs
+app/docs
+web/docs
 
 # OS X
 .DS_Store
