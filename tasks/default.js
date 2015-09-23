@@ -12,8 +12,12 @@ header = '\nprocessinho task-runner tool CLI.\n\n' +
 
 content = {
     'lint': 'Lint JavaScript code',
+    'test': 'Run unit tests',
     'report': 'Open code coverage report',
-    'test': 'Run unit tests'
+    'metal:test': 'Run browser tests',
+    'metal:test:coverage': 'Run browser tests and open code coverage',
+    'metal:test:browsers': 'Run browser tests on several browsers',
+    'metal:test:watch': 'Run tests on source changes'
 };
 
 function help(callback) {
