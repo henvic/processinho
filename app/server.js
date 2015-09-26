@@ -49,11 +49,6 @@ function handle500(req, res) {
     return errorHandler(req, res, 500);
 }
 
-    soynode.compileTemplates(__dirname + '/views', function (err) {
-        if (err) {
-            throw err;
-        }
-
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
