@@ -65,7 +65,7 @@ soynode.setOptions({
 });
 
 server = app.listen(config.server.port, config.server.address, function () {
-    console.log('Connect to ' + config.server.address + ':' + config.server.port);
+    console.log('Connect to http://' + config.server.address + ':' + config.server.port + '/');
     app.use(cookieParser());
     app.use(session({keys: ['not-really-secret-app-key']}));
     app.use(bodyParser.urlencoded({extended: false}));
