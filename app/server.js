@@ -1,6 +1,7 @@
 'use strict';
 
 var url = require('url');
+var path = require('path');
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var session = require('cookie-session');
