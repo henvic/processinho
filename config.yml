@@ -6,3 +6,4 @@ elastic:
   port: 9200
 persona:
   audience: http://localhost:8080/
+reverse_proxy: false

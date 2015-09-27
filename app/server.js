@@ -58,6 +58,10 @@ function ensureAuthenticated(req, res, next) {
     handle403(req, res);
 }
 
+if (config.reverse_proxy) {
+    app.set('trust proxy', config.reverse_proxy);
+}
+
 soynode.setOptions({
     inputDir: path.resolve(__dirname + '/../web/src'),
     outputDir: path.resolve(__dirname + '/../web/src'),
