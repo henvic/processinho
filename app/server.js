@@ -142,6 +142,7 @@ app.get('/search', function (request, response) {
     });
 });
 
+app.use('/bower_components', express.static(__dirname + '/../web/bower_components'));
 app.use(express.static(__dirname + '/../web/build'));
 app.use(express.static(__dirname + '/../web/static', {
     extensions: 'html'
