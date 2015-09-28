@@ -1,8 +1,8 @@
 // see ../bower_components/foundation/scss/foundation/components/_settings.scss
 
+@import "style-guidelines";
 @import "../bower_components/foundation/scss/normalize";
 @import "../bower_components/foundation/scss/foundation";
-@import "../bower_components/sweetalert/lib/sweet-alert";
 
 // Foundation icon fonts
 $fi-path: "../bower_components/foundation-icon-fonts" !default;
