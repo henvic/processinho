@@ -1,26 +1,26 @@
 {
-	"name": "metal-processinho",
-	"version": "0.0.0",
-	"description": "My little litigation.",
-	"main": "src/Processinho.js",
-	"moduleType": [
-		"es6"
-	],
-	"keywords": [
-		"metal",
-		"metal"
-	],
-	"ignore": [
-		"*",
-		"!src/**/*",
-		"!test/**/*"
-	],
-	"dependencies": {
-		"bootstrap": "~3.3.4",
-		"metal": "metal/metal.js#master",
-		"metal-jquery-adapter": "metal/metal-jquery-adapter#master",
-        "foundation": "~5.5.2",
-        "foundation-icon-fonts": "*",
-        "sweetalert": "~1.1.0"
-	}
+  "name": "metal-processinho",
+  "version": "0.0.0",
+  "description": "My little litigation.",
+  "main": "src/Processinho.js",
+  "moduleType": [
+    "es6"
+  ],
+  "keywords": [
+    "metal",
+    "metal"
+  ],
+  "ignore": [
+    "*",
+    "!src/**/*",
+    "!test/**/*"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.4",
+    "metal": "metal/metal.js#master",
+    "metal-jquery-adapter": "metal/metal-jquery-adapter#master",
+    "foundation": "~5.5.2",
+    "foundation-icon-fonts": "*",
+    "moment": "~2.10.6"
+  }
 }
