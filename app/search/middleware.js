@@ -21,7 +21,7 @@ function search(index, type, query) {
         },
         'highlight': {
             'fields': {
-                'title': {}
+                'texto_puro': {}
             },
             'encoder': 'html'
         }

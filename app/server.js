@@ -133,7 +133,7 @@ app.get('/search', function (request, response) {
     });
 
     request.on('end', function () {
-        middleware.search('law', 'projects', url.parse(request.url, true).query)
+        middleware.search('legisapp', 'documento', url.parse(request.url, true).query)
         .then(function (results) {
             response.writeHead(200, {
                 'Content-Type': 'application/json'

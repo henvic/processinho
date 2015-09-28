@@ -1,12 +1,182 @@
 {namespace Templates.Processinho}
 
 /**
- * This renders the main element.
- * @param? elementClasses
+ * This renders the main element
  * @param id
+ * @param? elementClasses
+ * @param? results
  * @skipUpdates elementClasses
  */
-{template .content}
-	<div id="{$id}" class="processinho component{$elementClasses ? ' ' + $elementClasses : ''}">
-	</div>
+{template .content autoescape="strict"}
+    <div id="{$id}" class="processinho processinho-dismissible component{$elementClasses ? ' ' + $elementClasses : ''}" role="processinho">
+        <div class="row">
+        <div class="large-12 columns">
+        <form action="/search" method="GET">
+            <div class="row">
+                <div class="large-10 columns">
+                    <input type="search" name="q" data-onkeydown="search" />
+                </div>
+                <div class="large-2 columns">
+                    <input type="submit" class="button postfix" value="Buscar">
+                </div>
+            </div>
+            <button type="submit" class="tiny secondary">Filtros</button>&nbsp;
+            <button type="submit" class="tiny secondary">Salvar busca</button>
+        </form>
+        <hr />
+        </div>
+        </div>
+        {call .results data="all" /}
+    </div>
+{/template}
+
+/**
+ * @param results
+ * @param id
+ */
+{template .results autoescape="strict"}
+    <div id="{$id}-result">
+    {if $results}
+    <div class="row">
+    <div class="large-12 columns">
+    <span class="label secondary">Cerca de {{$results.hits.total}} resultados ({$results.took}ms)</span>
+        <input id="exampleRadioSwitch3" type="checkbox" name="testGroup">
+        <label for="exampleRadioSwitch3">mostrar descrição</label>
+        <ul class="no-bullet">
+        {foreach $entry in $results.hits.hits}
+            {call .entry}
+            {param entry: $entry /}
+            {/call}
+        {ifempty}
+        Sem registro de projetos.
+        {/foreach}
+        </ul>
+        <ul class="pagination" role="menubar" aria-label="Pagination">
+          <li class="arrow unavailable" aria-disabled="true"><a href="">&laquo; Previous</a></li>
+          <li class="current"><a href="">1</a></li>
+          <li><a href="">2</a></li>
+          <li><a href="">3</a></li>
+          <li><a href="">4</a></li>
+          <li class="unavailable" aria-disabled="true"><a href="">&hellip;</a></li>
+          <li><a href="">12</a></li>
+          <li><a href="">13</a></li>
+          <li class="arrow"><a href="">Next &raquo;</a></li>
+        </ul>
+    </div>
+    </div>
+    {/if}
+    </div>
+{/template}
+
+/**
+ * @param entry
+ */
+{template .entry}
+{if $entry}
+<li class="project">
+    <a href="">{{$entry._source.tipo_projeto}} {{$entry._source.numero}}</a><br />
+    <p><em>{{$entry._source.original_keywords}}</em><br />
+    <span class="label success">{{$entry._source.data_publicacao}}</span>&nbsp;
+    <small>
+    {foreach $author in $entry._source.autores}
+    {$author[0]} ({$author[1]})
+    {if not isLast($author)}, {/if}
+    {ifempty}
+    Sem registro de autores.
+    {/foreach}
+    </small><br />
+    {{$entry._source.texto_puro|truncate:200}}
+    </p>
+</li>
+{/if}
+{/template}
+
+/**
+ * Shows a hello message.
+ *
+ * @param title Page title
+ */
+{template .base}
+<!doctype html>
+<html>
+<head>
+    <title>{$title}</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../processinho.css">
+    <base href="/" />
+    <script src="../bower_components/soyutils/soyutils.js"></script>
+    <script src="../globals/processinho.js"></script>
+</head>
+<body>
+    {call .menu data="all" /}
+    <h1>Processinho</h1>
+</body>
+</html>
+{/template}
+
+/**
+ * Menu
+ */
+{template .menu}
+<div class="icon-bar four-up">
+  <a class="item" aria-labelledby="#home-button" href="/">
+    <i class="fi-home"></i>
+    <label id="home-button">Home</label>
+  </a>
+  <a class="item" aria-labelledby="#pencil-button" href="/write">
+    <i class="fi-clipboard-pencil"></i>
+    <label id="pencil-button">Write</label>
+  </a>
+  <a class="item" href="/messages">
+    <i class="fi-mail" aria-labelledby="#mail-button"></i>
+    <label id="mail-button">Messages</label>
+  </a>
+  <a class="item" href="/account">
+    <i class="fi-wrench" aria-labelledby="#account-button"></i>
+    <label id="account-button">Account</label>
+  </a>
+</div>
+{/template}
+
+/**
+ * 403 Forbidden
+ *
+ * @param verb
+ * @param url
+ */
+{template .error403}
+{call .base data="all"}
+{param title kind="text"}403 Forbidden{/param}
+{param body kind="html"}
+<div class="row">
+    <div class="large-12 columns text-center">
+        <h1>403 Forbidden</h1>
+        <img src="/images/403.svg" width="50%" title="403 Forbidden." />
+        <p>You've tried to <b>{$verb} {$url}</b>, but you don't have the right permissions.</p>
+    </div>
+</div>
+{/param}
+{/call}
+{/template}
+
+/**
+ * 404 Not found
+ *
+ * @param verb
+ * @param url
+ */
+{template .error404}
+{call .base data="all"}
+{param title kind="text"}404 Not Found{/param}
+{param body kind="html"}
+<div class="row">
+    <div class="large-12 columns text-center">
+        <h1>404 Not Found</h1>
+        <img src="/images/404.svg" width="50%" title="404 Page not found." />
+        <p>You've tried to <b>{$verb} {$url}</b>.</p>
+    </div>
+</div>
+{/param}
+{/call}
 {/template}
