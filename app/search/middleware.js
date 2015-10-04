@@ -102,4 +102,44 @@ function search(index, type, query) {
     });
 }
 
+function get(index, type, id) {
+    var options;
+    var buffer = '';
+
+    options = {
+        hostname: config.elastic.hostname,
+        path: '/' + index + '/' + type + '/' + id,
+        port: config.elastic.port,
+        method: 'GET'
+    };
+
+    return new Promise(function queryBackend(resolve, reject) {
+        var req = http.request(options, function (res) {
+            res.setEncoding('utf8');
+
+            res.on('data', function (data) {
+                buffer += data;
+            });
+
+            res.on('end', function () {
+                var responseBody = JSON.parse(buffer);
+
+                if (res.statusCode === 200) {
+                    resolve(responseBody);
+                    return;
+                }
+
+                reject(responseBody, res);
+            });
+        });
+
+        req.on('error', function (e) {
+            throw e;
+        });
+
+        req.end();
+    });
+}
+
 module.exports.search = search;
+module.exports.get = get;

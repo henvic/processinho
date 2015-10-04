@@ -63,8 +63,9 @@ if (config.reverse_proxy) {
 }
 
 soynode.setOptions({
-    inputDir: path.resolve(__dirname + '/../web/src'),
-    outputDir: path.resolve(__dirname + '/../web/src'),
+    // __dirname + '/../web/src'
+    inputDir: path.resolve('/Users/henvic/projects/processinho/web/src'),
+    outputDir: path.resolve('/Users/henvic/projects/processinho/web/src/foo'),
     allowDynamicRecompile: true,
     eraseTemporaryFiles: true
 });
@@ -124,26 +125,37 @@ app.post('/auth',
 );
 
 app.get('/search', function (request, response) {
+    middleware.search('legisapp', 'documento', url.parse(request.url, true).query)
+    .then(function (results) {
+        response.writeHead(200, {
+            'Content-Type': 'application/json'
+        });
+        response.end(JSON.stringify(results));
+    })
+    .catch(function (e) {
+        console.error(e);
+        handle403(request, response);
+    });
+});
+
+app.get('/docs/:id', function (request, response, next) {
+    var id;
     var body = '';
 
-    request.setEncoding('utf8');
+    if (typeof request.params.id !== 'string') {
+        next();
+        return;
+    }
 
-    request.on('data', function (chuck) {
-        body += chuck;
-    });
+    id = request.params.id;
 
-    request.on('end', function () {
-        middleware.search('legisapp', 'documento', url.parse(request.url, true).query)
-        .then(function (results) {
-            response.writeHead(200, {
-                'Content-Type': 'application/json'
-            });
-            response.end(JSON.stringify(results));
-        })
-        .catch(function (e) {
-            console.error(e);
-            handle403(request, response);
-        });
+    middleware.get('legisapp', 'documento', id)
+    .then(function (results) {
+        response.end(JSON.stringify(results));
+    })
+    .catch(function (e) {
+        console.error(e);
+        handle403(request, response);
     });
 });
 

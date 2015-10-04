@@ -4,6 +4,7 @@
  * This renders the main element
  * @param id
  * @param? elementClasses
+ * @param? q
  * @param? results
  * @skipUpdates elementClasses
  */
@@ -11,10 +12,10 @@
     <div id="{$id}" class="processinho processinho-dismissible component{$elementClasses ? ' ' + $elementClasses : ''}" role="processinho">
         <div class="row">
         <div class="large-12 columns">
-        <form action="/search" method="GET">
+        <form action="/" method="GET">
             <div class="row">
                 <div class="large-10 columns">
-                    <input type="search" name="q" data-onkeydown="search" />
+                    <input type="text" autocomplete="off" name="q" data-onkeyup="searchKeyup" value="{{ $q }}" />
                 </div>
                 <div class="large-2 columns">
                     <input type="submit" class="button postfix" value="Buscar">
@@ -31,7 +32,15 @@
 {/template}
 
 /**
+ * This renders the main element
+ */
+{template .doc}
+hello, world
+{/template}
+
+/**
  * @param results
+ * @param page
  * @param id
  */
 {template .results autoescape="strict"}
@@ -39,9 +48,11 @@
     {if $results}
     <div class="row">
     <div class="large-12 columns">
-    <span class="label secondary">Cerca de {{$results.hits.total}} resultados ({$results.took}ms)</span>
-        <input id="exampleRadioSwitch3" type="checkbox" name="testGroup">
-        <label for="exampleRadioSwitch3">mostrar descrição</label>
+    <span class="label secondary">
+    {if $results}
+    Página {{$page}} de cerca de {{$results.hits.total}} resultados ({$results.took}ms)
+    {/if}
+    </span>
         <ul class="no-bullet">
         {foreach $entry in $results.hits.hits}
             {call .entry}
@@ -52,15 +63,12 @@
         {/foreach}
         </ul>
         <ul class="pagination" role="menubar" aria-label="Pagination">
-          <li class="arrow unavailable" aria-disabled="true"><a href="">&laquo; Previous</a></li>
-          <li class="current"><a href="">1</a></li>
-          <li><a href="">2</a></li>
-          <li><a href="">3</a></li>
-          <li><a href="">4</a></li>
-          <li class="unavailable" aria-disabled="true"><a href="">&hellip;</a></li>
-          <li><a href="">12</a></li>
-          <li><a href="">13</a></li>
-          <li class="arrow"><a href="">Next &raquo;</a></li>
+        {if $results.previous}
+        <li class="arrow"><a href="{$results.previous}">&laquo; Previous</a></li>
+        {/if}
+        {if $results.next}
+        <li class="arrow"><a href="{$results.next}">Next &raquo;</a></li>
+        {/if}
         </ul>
     </div>
     </div>
@@ -74,18 +82,30 @@
 {template .entry}
 {if $entry}
 <li class="project">
-    <a href="">{{$entry._source.tipo_projeto}} {{$entry._source.numero}}</a><br />
-    <p><em>{{$entry._source.original_keywords}}</em><br />
+    <a href="/docs/{{$entry._id}}">{{$entry._source.tipo_projeto}} {{$entry._source.numero}}</a><br />
+    <p><small>{{$entry._source.original_keywords}}</small><br />
     <span class="label success">{{$entry._source.data_publicacao}}</span>&nbsp;
     <small>
+    {if $entry._source.autores}
     {foreach $author in $entry._source.autores}
     {$author[0]} ({$author[1]})
     {if not isLast($author)}, {/if}
     {ifempty}
     Sem registro de autores.
     {/foreach}
+    {/if}
     </small><br />
-    {{$entry._source.texto_puro|truncate:200}}
+    {if $entry.highlight and $entry.highlight.texto_puro}
+    {if $entry.highlight.texto_puro[0]}
+    {$entry.highlight.texto_puro[0]}
+    {/if}
+    {if $entry.highlight.texto_puro[1]}
+    {$entry.highlight.texto_puro[1]}
+    {/if}
+     ...
+    {else}
+    {$entry._source.texto_puro|truncate:200}
+    {/if}
     </p>
 </li>
 {/if}
