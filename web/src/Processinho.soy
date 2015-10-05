@@ -95,6 +95,7 @@ hello, world
     {/foreach}
     {/if}
     </small><br />
+    <a href="/docs/{{$entry._id}}">
     {if $entry.highlight and $entry.highlight.texto_puro}
     {if $entry.highlight.texto_puro[0]}
     {$entry.highlight.texto_puro[0]}
@@ -106,6 +107,7 @@ hello, world
     {else}
     {$entry._source.texto_puro|truncate:200}
     {/if}
+    </a>
     </p>
 </li>
 {/if}
