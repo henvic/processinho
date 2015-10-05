@@ -141,6 +141,8 @@ app.get('/search', function (request, response) {
 
 app.get('/docs/:id', function (request, response, next) {
     var id;
+    var body;
+    var content;
 
     if (typeof request.params.id !== 'string') {
         next();
@@ -152,11 +154,22 @@ app.get('/docs/:id', function (request, response, next) {
     middleware.get('legisapp', 'documento', id)
     .then(function (results) {
         response.header("Content-Type", "text/html; charset=utf-8");
-        response.end(marked(results._source.texto_puro, {
+
+        content = marked(results._source.texto_puro, {
             sanitize: true,
             smartypants: true,
             breaks: true
-        }));
+        });
+
+        body = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">' +
+        '<title>LegisApp</title>' +
+        '<meta name="viewport" content="width=device-width">' +
+        '<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">' +
+        '<link rel="stylesheet" href="../processinho.css">' +
+        '<base href="/" /></head><body><div class="row"><div class="large-12 columns">' + content +
+        '</div></div></body></html>';
+
+        response.end(body);
     })
     .catch(function (e) {
         console.error(e);
