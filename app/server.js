@@ -14,6 +14,7 @@ var PersonaStrategy = require('passport-persona').Strategy;
 var config = require('./config');
 var middleware = require('./search/middleware');
 var template = require('./template');
+var marked = require('marked');
 var csrfProtection = csrf({ cookie: true });
 var server;
 
@@ -140,7 +141,6 @@ app.get('/search', function (request, response) {
 
 app.get('/docs/:id', function (request, response, next) {
     var id;
-    var body = '';
 
     if (typeof request.params.id !== 'string') {
         next();
@@ -151,7 +151,12 @@ app.get('/docs/:id', function (request, response, next) {
 
     middleware.get('legisapp', 'documento', id)
     .then(function (results) {
-        response.end(JSON.stringify(results));
+        response.header("Content-Type", "text/html; charset=utf-8");
+        response.end(marked(results._source.texto_puro, {
+            sanitize: true,
+            smartypants: true,
+            breaks: true
+        }));
     })
     .catch(function (e) {
         console.error(e);
